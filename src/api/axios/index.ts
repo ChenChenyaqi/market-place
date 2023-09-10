@@ -1,6 +1,5 @@
 import { getToken } from '@/utils/token'
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -38,10 +37,7 @@ request.interceptors.response.use(
         message = '网络故障'
         return
     }
-    ElMessage({
-      type: 'error',
-      message
-    })
+
     return Promise.reject(error)
   }
 )

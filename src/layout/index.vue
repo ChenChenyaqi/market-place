@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <TopBanner />
-    <div class="bg-slate-500 min-h-screen py-4 flex flex-col items-center">
-      <RouterView />
-    </div>
-  </div>
+  <TopBanner />
+  <RouterView />
 </template>
 
 <script setup lang="ts">

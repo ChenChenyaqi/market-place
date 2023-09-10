@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-slate-100 w-11/12 xl:w-3/5 lg:w-4/5 md:w-11/12">主页</div>
+  <nut-row>
+    <nut-col :span="24"><nut-cell title="主页"></nut-cell></nut-col>
+  </nut-row>
 </template>
 
 <script setup lang="ts"></script>
