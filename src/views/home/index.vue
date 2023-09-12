@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-slate-100 w-11/12 xl:w-3/5 lg:w-4/5 md:w-11/12">主页</div>
+  <div>
+    <div class="goods-class-wrapper"></div>
+    <div class="goods-cards-wrapper"></div>
+  </div>
 </template>
 
 <script setup lang="ts"></script>
