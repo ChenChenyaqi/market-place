@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@nutui/icons-vue':
+    specifier: ^0.1.1
+    version: 0.1.1
   '@nutui/nutui':
     specifier: ^4.1.5
     version: 4.1.5

@@ -1,7 +1,8 @@
 <template>
-  <nut-row>
-    <nut-col :span="24"><nut-cell title="主页"></nut-cell></nut-col>
-  </nut-row>
+  <div>
+    <div class="goods-class-wrapper"></div>
+    <div class="goods-cards-wrapper"></div>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

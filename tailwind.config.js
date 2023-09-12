@@ -7,7 +7,8 @@ export default {
         'main-color': '#FF5000'
       },
       backgroundColor: {
-        'main-color': '#FF5000'
+        'main-color': '#FF5000',
+        'banner-bg-color': '#EAE8EB'
       }
     }
   },
