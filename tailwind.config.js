@@ -4,11 +4,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        'main-color': '#FF5000'
+        'main-color': '#496FF2'
       },
       backgroundColor: {
-        'main-color': '#FF5000',
+        'main-color': '#496FF2',
         'banner-bg-color': '#EAE8EB'
+      },
+      width: {
+        'phone-w': '49%'
       }
     }
   },
