@@ -1,4 +1,4 @@
-import { getToken } from '@/utils/token'
+import { getToken } from '@/utils/userStorage.ts'
 import axios from 'axios'
 
 const request = axios.create({
@@ -18,7 +18,7 @@ request.interceptors.response.use(
     return response.data
   },
   (error) => {
-    let message = ''
+    let message
     const { status } = error.response
     switch (status) {
       case 401:
@@ -28,6 +28,7 @@ request.interceptors.response.use(
         message = '无权访问'
         break
       case 404:
+        // todo fill 404 with err reason
         message = '请求地址错误'
         break
       case 500:

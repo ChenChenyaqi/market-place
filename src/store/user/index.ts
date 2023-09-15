@@ -1,37 +1,43 @@
-import { reqLogin } from '@/api/user'
-import { LoginForm } from '@/api/user/type'
-import { getToken, setToken } from '@/utils/token'
+import { autoSignIn, signIn } from '@/api/user'
+import {AutoSignInRequest, SignInRequest} from '@/api/user/request.ts'
+import {saveUser, getUser, updateCode} from '@/utils/userStorage.ts'
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 
-interface UserState {
-  userId: string
-  username: string
-  token: string
-}
+type UserState = AutoSignInRequest
 
-const useUserStore = defineStore('user', () => {
+export default useUserStore = defineStore('user', () => {
   const useInfo = reactive<UserState>({
-    userId: '',
-    username: '',
-    token: getToken()
+    userId: 0,
+    code: ''
   })
 
-  const userLogin = async (formData: LoginForm) => {
-    const result = await reqLogin(formData)
-    const { code, data } = result
-    if (code === 200) {
-      useInfo.token = data.token as string
-      setToken(useInfo.token)
-      return '登录成功！'
-    } else {
-      return Promise.reject(new Error(data.message))
-    }
+  const userSignin = async (form: FormData| SignInRequest) => {
+    const result = await signIn({
+      identifier: form.identifier,
+      password: form.password
+    })
+
+    const { code, userId } = result
+    useInfo.userId = userId
+    useInfo.code = code
+    saveUser(useInfo)
+    return '登录成功！'
   }
+
+  const autoSignin = async () => {
+    const record = getUser()
+    useInfo.userId = record.userId
+    useInfo.code = record.code
+    const code = await autoSignIn(useInfo)
+        .then(e=> e.code)
+    useInfo.code = code
+    updateCode(code)
+    return "自动登录成功!"
+  }
+
   return {
-    useInfo,
-    userLogin
+    userSignin,
+    autoSignin
   }
 })
-
-export default useUserStore
