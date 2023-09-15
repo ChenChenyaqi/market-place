@@ -1,4 +1,3 @@
-import { getToken } from '@/utils/userStorage.ts'
 import axios from 'axios'
 
 const request = axios.create({
@@ -8,7 +7,6 @@ const request = axios.create({
 
 // 请求拦截器
 request.interceptors.request.use((config) => {
-  config.headers.TOKEN = getToken()
   return config
 })
 

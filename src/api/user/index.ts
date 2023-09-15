@@ -27,28 +27,24 @@ export function sendVerifyCode(param: VerifyRequest){
 export function signUp(param: SignUpRequest): Promise<SignInResponse>{
     return request
         .post(API.SIGNUP_RUL, param)
-        .then(e => e.data)
-        .then(JSON.stringify)
+                .then(JSON.stringify)
 }
 
 export function signIn(param: SignInRequest): Promise<SignInResponse>{
     return request
         .post(API.SIGNIN_URL, param)
-        .then(e => e.data)
-        .then(JSON.stringify)
+                .then(JSON.stringify)
 }
 
 export function autoSignIn(param: AutoSignInRequest): Promise<CodeResponse>{
   return request
       .post(API.AUTO_SIGNIN_URL, param)
-      .then(e => e.data)
-      .then(JSON.stringify)
+            .then(JSON.stringify)
 }
 
 export function getUserInfo(param: QueryByUserRequest): Promise<UserInfoResponse>{
   return request
       .get(API.INFO_URL, param)
-      .then(e => e.data)
-      .then(JSON.stringify)
+            .then(JSON.stringify)
 }
 

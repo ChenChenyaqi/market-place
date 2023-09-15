@@ -17,15 +17,21 @@
       </nut-searchbar>
     </div>
     <div class="pr-2">
-      <IconFont class="text-main-color" name="my2"></IconFont>
+      <IconFont class="text-main-color" name="my2" @click="click"></IconFont>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import {IconFont} from "@nutui/icons-vue";
+import router from "@/router";
 
 const searchValue = ref('')
+
+function click() {
+  router.push("/use-action")
+}
 </script>
 
 <style scoped lang="less"></style>

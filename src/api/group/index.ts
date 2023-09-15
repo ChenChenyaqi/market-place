@@ -40,7 +40,7 @@ export class ConnectionBuilder{
     }
 
     build(): WebSocket {
-        const ws = new WebSocket(API.GROUP_URL)
+        const ws = new WebSocket("ws://" + API.GROUP_URL)
         ws.onopen = () => {
             ws.send(JSON.stringify(this.init))
         }
@@ -55,13 +55,11 @@ export class ConnectionBuilder{
 export function getGroupId(param: QueryByGoodsRequest): Promise<GroupResponse> {
     return request
         .get(API.GROUP_QUERY, param)
-        .then(e => e.data)
-        .then(JSON.stringify)
+                .then(JSON.stringify)
 }
 
 export function getSellerId(param: QueryByGroupRequest): Promise<SellerResponse> {
     return request
         .get(API.GROUP_SELLER, param)
-        .then(e => e.data)
-        .then(JSON.stringify)
+                .then(JSON.stringify)
 }

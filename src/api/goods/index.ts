@@ -23,8 +23,7 @@ export function publish(param: PublishRequest): Promise<GoodsResponse>{
     param.tags = param.tags?.join(';')
     return request
         .post(API.PUBLISH, param)
-        .then(e => e.data)
-        .then(JSON.stringify)
+                .then(JSON.stringify)
 }
 
 export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyArgument): Promise<Any>{
@@ -42,7 +41,10 @@ export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyA
 export function getIcon(param: QueryByGoodsRequest): Promise<File>{
     return request
         .get(API.ICON, param)
-        .then(res => res.data)
+}
+
+export function iconUrl(param: QueryByGoodsRequest): string {
+    return import.meta.env.VITE_APP_BASE_API + "/" + param.goodsId
 }
 
 export function removeGoods(param: RemoveGoodsRequest, userVerify: UserVerifyArgument): Promise<Any>{
@@ -63,8 +65,7 @@ export function completeDeal(){
 export function queryGoodsInfo(param: QueryGoodsInfoRequest): Promise<GoodsInfoResponse> {
   return request
       .get(API.DETAIL, {"goodsIds": param.goodsIds.join(';')})
-      .then(e => e.data)
-      .then(JSON.stringify)
+            .then(JSON.stringify)
 }
 
 export function queryGoods(param: QueryRequest): Promise<QueryRequest>{
@@ -72,6 +73,5 @@ export function queryGoods(param: QueryRequest): Promise<QueryRequest>{
     param.tags = param.tags?.join(';')
     return request
         .get(API.QUERY, param)
-        .then(e => e.data)
-        .then(JSON.stringify)
+                .then(JSON.stringify)
 }
