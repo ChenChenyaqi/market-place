@@ -15,9 +15,9 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/use-action',
-    name: 'login',
-    component: () => import('@/views/use-action/index.vue')
+    path: '/sign',
+    name: 'sign',
+    component: () => import('@/views/sign/index.vue')
   },
   {
     path: '/404',

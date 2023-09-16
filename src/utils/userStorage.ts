@@ -7,6 +7,7 @@ export function saveUser(info: AutoSignInRequest) {
 
 export function getUser(): AutoSignInRequest {
   return {
+    identifier: localStorage.getItem('identifier') || '',
     userId: localStorage.getItem('userId') || 0,
     code: localStorage.getItem('code') || ''
   }

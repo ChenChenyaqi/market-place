@@ -30,7 +30,7 @@ import router from "@/router";
 const searchValue = ref('')
 
 function click() {
-  router.push("/use-action")
+  router.push("/sign")
 }
 </script>
 

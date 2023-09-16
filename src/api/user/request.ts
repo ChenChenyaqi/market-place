@@ -1,3 +1,5 @@
+import {ContactType} from "@/api/global/enum.ts";
+
 /**
  * @member userId 用户ID, int64
  */
@@ -37,7 +39,8 @@ export type UserVerifyArgument = AutoSignInRequest
  */
 export interface VerifyRequest {
   username: string,
-  contact: string
+  contact: string,
+  type: ContactType
 }
 
 /**

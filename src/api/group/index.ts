@@ -4,6 +4,7 @@ import {GroupResponse} from "response.ts";
 import {request} from "../axios";
 import {SellerResponse} from "@/api/goods/response.ts";
 import {QueryByGroupRequest} from "@/api/group/request.ts";
+import {ResponsePromise} from "@/api/global/response.ts";
 
 enum API{
     GROUP_URL = "/group",
@@ -52,14 +53,14 @@ export class ConnectionBuilder{
     }
 }
 
-export function getGroupId(param: QueryByGoodsRequest): Promise<GroupResponse> {
+export function getGroupId(param: QueryByGoodsRequest): ResponsePromise<GroupResponse> {
     return request
         .get(API.GROUP_QUERY, param)
-                .then(JSON.stringify)
+
 }
 
-export function getSellerId(param: QueryByGroupRequest): Promise<SellerResponse> {
+export function getSellerId(param: QueryByGroupRequest): ResponsePromise<SellerResponse> {
     return request
         .get(API.GROUP_SELLER, param)
-                .then(JSON.stringify)
+
 }

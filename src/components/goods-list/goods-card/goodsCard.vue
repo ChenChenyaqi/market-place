@@ -16,12 +16,12 @@
       <div class="goods-name">
         <nut-ellipsis
           :line-height="20"
-          :content="goods.goodsDescription"
+          :content="goodsDetail.value.name"
           :rows="2"
         />
       </div>
       <div class="goods-price px-2 pb-1">
-        <nut-price class="!text-red-500" :price="goods.goodsPrice" />
+        <nut-price class="!text-red-500" :price="goodsDetail.value.price" />
       </div>
     </div>
   </div>

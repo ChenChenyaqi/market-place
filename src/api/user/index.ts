@@ -9,6 +9,7 @@ import {
 import {
   CodeResponse, SignInResponse, UserInfoResponse
 } from "@/api/user/response.ts";
+import {ResponsePromise} from "@/api/global/response.ts";
 
 enum API {
   INFO_URL = '/userinfo',
@@ -18,33 +19,31 @@ enum API {
   AUTO_SIGNIN_URL = '/auto-signin'
 }
 
-export function sendVerifyCode(param: VerifyRequest){
+export function sendVerifyCode(param: VerifyRequest): ResponsePromise<null>{
     return request
         .post(API.VERIFY_URL, param)
-        .then(null, err => console.log(err.data))
 }
 
-export function signUp(param: SignUpRequest): Promise<SignInResponse>{
+export function signUp(param: SignUpRequest): ResponsePromise<SignInResponse>{
     return request
         .post(API.SIGNUP_RUL, param)
-                .then(JSON.stringify)
+
 }
 
-export function signIn(param: SignInRequest): Promise<SignInResponse>{
+export function signIn(param: SignInRequest): ResponsePromise<SignInResponse>{
     return request
         .post(API.SIGNIN_URL, param)
-                .then(JSON.stringify)
 }
 
-export function autoSignIn(param: AutoSignInRequest): Promise<CodeResponse>{
+export function autoSignIn(param: AutoSignInRequest): ResponsePromise<CodeResponse>{
   return request
       .post(API.AUTO_SIGNIN_URL, param)
-            .then(JSON.stringify)
+
 }
 
-export function getUserInfo(param: QueryByUserRequest): Promise<UserInfoResponse>{
+export function getUserInfo(param: QueryByUserRequest): ResponsePromise<UserInfoResponse>{
   return request
       .get(API.INFO_URL, param)
-            .then(JSON.stringify)
+
 }
 

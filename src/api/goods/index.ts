@@ -9,6 +9,7 @@ import {
     QueryGoodsInfoRequest,
     QueryRequest
 } from "@/api/goods/request.ts";
+import {ResponsePromise} from "@/api/global/response.ts";
 
 enum API{
     PUBLISH = '/goods/publish',
@@ -18,15 +19,15 @@ enum API{
     QUERY = '/query',
 }
 
-export function publish(param: PublishRequest): Promise<GoodsResponse>{
+export function publish(param: PublishRequest): ResponsePromise<GoodsResponse>{
     param.keywords = param.keywords?.join(';')
     param.tags = param.tags?.join(';')
     return request
         .post(API.PUBLISH, param)
-                .then(JSON.stringify)
+
 }
 
-export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyArgument): Promise<Any>{
+export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyArgument): ResponsePromise<Any>{
     return request
         .put(API.ICON, param, {
             headers: {
@@ -38,7 +39,7 @@ export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyA
         })
 }
 
-export function getIcon(param: QueryByGoodsRequest): Promise<File>{
+export function getIcon(param: QueryByGoodsRequest): ResponsePromise<File>{
     return request
         .get(API.ICON, param)
 }
@@ -47,7 +48,7 @@ export function iconUrl(param: QueryByGoodsRequest): string {
     return import.meta.env.VITE_APP_BASE_API + "/" + param.goodsId
 }
 
-export function removeGoods(param: RemoveGoodsRequest, userVerify: UserVerifyArgument): Promise<Any>{
+export function removeGoods(param: RemoveGoodsRequest, userVerify: UserVerifyArgument): ResponsePromise<Any>{
     return request
         .delete(API.REMOVE, {
             headers: {
@@ -62,16 +63,16 @@ export function completeDeal(){
     // todo completeDeal logic
 }
 
-export function queryGoodsInfo(param: QueryGoodsInfoRequest): Promise<GoodsInfoResponse> {
+export function queryGoodsInfo(param: QueryGoodsInfoRequest): ResponsePromise<GoodsInfoResponse> {
   return request
       .get(API.DETAIL, {"goodsIds": param.goodsIds.join(';')})
-            .then(JSON.stringify)
+
 }
 
-export function queryGoods(param: QueryRequest): Promise<QueryRequest>{
+export function queryGoods(param: QueryRequest): ResponsePromise<QueryRequest>{
     param.keywords = param.keywords?.join(';')
     param.tags = param.tags?.join(';')
     return request
         .get(API.QUERY, param)
-                .then(JSON.stringify)
+
 }
