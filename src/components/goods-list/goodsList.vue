@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 
-import {onActivated, reactive, watch} from "vue";
+import {reactive, watch} from "vue";
 import {GoodsInfo} from "@/components/goods-list/type.ts";
 import {queryGoodsInfo} from "@/api/goods";
 import GoodsCard from "@/components/goods-list/goods-card/goodsCard.vue";
@@ -55,12 +55,6 @@ watch(goods, async (_, lst) => {
         detail: details[id]
       })
   }
-})
-
-onActivated(()=>{
-  renderedSize = 0
-  leftGoodsList.value.splice(0, leftGoodsList.value.length)
-  rightGoodsList.value.splice(0, rightGoodsList.value.length)
 })
 </script>
 
