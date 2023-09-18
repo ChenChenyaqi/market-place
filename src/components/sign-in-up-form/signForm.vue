@@ -128,6 +128,7 @@ import { state } from 'vue-tsc/out/shared'
 import { typeToTemplate } from '@/components/sign-in-up-form/type.ts'
 import useUserStore from '@/store/user'
 import { showToast } from '@nutui/nutui'
+import router from "@/router";
 
 const user = useUserStore()
 const signSwitch = ref(false)
@@ -202,7 +203,7 @@ function submit() {
           waiting.value = false
           if (e != null) return showToast.warn(e)
           showToast.success('登录成功')
-          // todo redirect
+          router.replace('/home')
         })
     else
       user
@@ -216,7 +217,7 @@ function submit() {
           waiting.value = false
           if (e != null) return showToast.warn(e)
           showToast.success('注册成功')
-          // todo redirect
+          router.replace('/home')
         })
   })
 }

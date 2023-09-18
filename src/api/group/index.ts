@@ -55,12 +55,26 @@ export class ConnectionBuilder{
 
 export function getGroupId(param: QueryByGoodsRequest): ResponsePromise<GroupResponse> {
     return request
-        .get(API.GROUP_QUERY, param)
+        .get(API.GROUP_QUERY, {
+            params: param
+        })
+        .then(e => {
+            if (e.code != 200)
+                return e.reason!
+            return e.body!
+        })
 
 }
 
 export function getSellerId(param: QueryByGroupRequest): ResponsePromise<SellerResponse> {
     return request
-        .get(API.GROUP_SELLER, param)
+        .get(API.GROUP_SELLER, {
+            params: param
+        })
+        .then(e => {
+            if (e.code != 200)
+                return e.reason!
+            return e.body!
+        })
 
 }

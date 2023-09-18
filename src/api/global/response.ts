@@ -4,5 +4,5 @@ export interface Response<T> {
   body: T | null
 }
 
-export type ResponsePromise<T> = Promise<Response<T>>
+export type ResponsePromise<T> = Promise<T | string>
 

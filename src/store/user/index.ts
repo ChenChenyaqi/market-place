@@ -1,14 +1,22 @@
-import {autoSignIn, signIn, signUp} from '@/api/user'
-import {AutoSignInRequest, SignInRequest, SignUpRequest} from '@/api/user/request.ts'
-import {saveUser, getUser, updateCode} from '@/utils/userStorage.ts'
-import { defineStore } from 'pinia'
-import { reactive } from 'vue'
+import {autoSignIn, getUserInfo, signIn, signUp} from '@/api/user'
+import {SignInRequest, SignUpRequest} from '@/api/user/request.ts'
+import {saveUser, getUser, updateCode, getLastCheck} from '@/utils/userStorage.ts'
+import {defineStore, storeToRefs} from 'pinia'
+import {reactive} from 'vue'
+import {UserInfoResponse} from "@/api/user/response.ts";
+import {UserType} from "@/api/global/enum.ts";
 
-type UserState = AutoSignInRequest
 
 const useUserStore = defineStore('user', () => {
-  const useInfo = reactive<UserState>({
+  const userInfo = reactive<{
+    userId: number,
+    name: string,
+    type: UserType | "UNKNOWN",
+    code: string
+  }>({
     userId: 0,
+    name: '',
+    type: '',
     code: ''
   })
 
@@ -16,39 +24,38 @@ const useUserStore = defineStore('user', () => {
     const result = await signIn({
       identifier: form.identifier,
       password: form.password
-    }).then(e => {
-      console.log(e.code)
-      if (e.code != 200)
-        return e.reason!
-      return e.body!
     })
-    console.log(result)
 
-    if (typeof result === "string")
+    if (typeof result == "string")
         return result
 
     const { code, userId } = result
-    useInfo.userId = userId
-    useInfo.code = code
-    saveUser(useInfo)
-    return null
+    userInfo.userId = userId
+    userInfo.code = code
+    saveUser(result)
+    return await updateUserInfo()
   }
 
   const autoSignin = async () => {
-    const record = getUser()
-    useInfo.userId = record.userId
-    useInfo.code = record.code
-    const code = await autoSignIn(useInfo).then(e => {
-      if (e.code != 200)
-        return e.reason!
-      return e.body!
-    })
-    if (typeof code === "string")
-        return code
 
-    useInfo.code = code.code
-    updateCode(code)
-    return null
+    if ( (Date.now() - getLastCheck()) / 1000 / 60 <= 15 )
+      return null
+
+    const record = getUser()
+    if (record.code == '')
+      return "欢迎来到云集!"
+    userInfo.userId = record.userId
+    userInfo.code = record.code
+    const code = await autoSignIn(record)
+    if (typeof code === "string") {
+      userInfo.code = ''
+      return code
+    }
+
+    userInfo.code = code.code
+    updateCode(code.code)
+
+    return await updateUserInfo()
   }
 
   const userSignup = async (param: SignUpRequest) => {
@@ -63,16 +70,28 @@ const useUserStore = defineStore('user', () => {
         return result
 
     const { code, userId } = result
-    useInfo.userId = userId
-    useInfo.code = code
-    saveUser(useInfo)
-    return null
+    userInfo.userId = userId
+    userInfo.code = code
+    saveUser(userInfo)
+    return await updateUserInfo()
   }
+
+  const updateUserInfo = async () => {
+    const record = await getUserInfo({
+        userId: userInfo.userId,
+    })
+    if (typeof record == "string")
+        return record
+    userInfo.name = record.name
+    userInfo.type = record.type
+  }
+
 
   return {
     userSignin,
     autoSignin,
-    userSignup
+    userSignup,
+    ...storeToRefs(userInfo)
   }
 })
 

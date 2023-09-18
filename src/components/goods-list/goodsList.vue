@@ -3,7 +3,7 @@
     <div class="left flex flex-col gap-2 w-phone-w">
       <transition-group name="list" tag="div">
         <GoodsCard
-          v-for="{goodsId, detail} in leftGoodsList"
+          v-for="{ goodsId, detail } in leftGoodsList"
           :key="goodItem.goodsId"
           :goods-id="goodsId"
           :goods-detail="detail"
@@ -13,7 +13,7 @@
     <div class="right flex flex-col gap-2 w-phone-w">
       <transition-group name="list" tag="div">
         <GoodsCard
-          v-for="{goodsId, detail}  in rightGoodsList"
+          v-for="{ goodsId, detail } in rightGoodsList"
           :key="goodItem.goodsId"
           :goods-id="goodsId"
           :goods-detail="detail"
@@ -24,11 +24,11 @@
 </template>
 
 <script setup lang="ts">
-
-import {reactive, watch} from "vue";
-import {GoodsInfo} from "@/components/goods-list/type.ts";
-import {queryGoodsInfo} from "@/api/goods";
-import GoodsCard from "@/components/goods-list/goods-card/goodsCard.vue";
+import { reactive, watch } from 'vue'
+import { GoodsInfo } from '@/components/goods-list/type.ts'
+import { queryGoodsInfo } from '@/api/goods'
+import GoodsCard from '@/components/goods-list/goods-card/goodsCard.vue'
+import { showToast } from '@nutui/nutui'
 
 const props = defineProps<{
   goodsIdList: number[]
@@ -45,15 +45,18 @@ watch(goods, async (_, lst) => {
   const details = await queryGoodsInfo({
     goodsIds: updated
   })
+
+  if (typeof details == 'string') {
+    showToast.fail('搜索失败'+details)
+  }
+
   let left: Boolean = false
-  for (let id in updated){
-    if (!(id in details))
-      continue
-    (left ? leftGoodsList : rightGoodsList)
-      .push({
-        goodsId: id,
-        detail: details[id]
-      })
+  for (let id in updated) {
+    if (!(id in details)) continue
+    ;(left ? leftGoodsList : rightGoodsList).push({
+      goodsId: id,
+      detail: details[id]
+    })
   }
 })
 </script>

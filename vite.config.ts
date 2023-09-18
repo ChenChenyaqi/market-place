@@ -25,5 +25,9 @@ export default defineConfig({
         additionalData: `@import "@/style.scss";@import "@nutui/nutui/dist/styles/variables.scss";`
       }
     }
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 1234
   }
 })

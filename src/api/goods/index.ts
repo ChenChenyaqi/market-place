@@ -24,6 +24,11 @@ export function publish(param: PublishRequest): ResponsePromise<GoodsResponse>{
     param.tags = param.tags?.join(';')
     return request
         .post(API.PUBLISH, param)
+        .then(e => {
+            if (e.code != 200)
+                return e.reason!
+            return e.body!
+        })
 
 }
 
@@ -37,11 +42,23 @@ export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyA
                 "X-Goods-Id": goodsId
             }
         })
+        .then(e => {
+            if (e.code != 200)
+                return e.reason!
+            return e.body!
+        })
 }
 
 export function getIcon(param: QueryByGoodsRequest): ResponsePromise<File>{
     return request
-        .get(API.ICON, param)
+        .get(API.ICON, {
+            params: param
+        })
+        .then(e => {
+            if (e.code != 200)
+                return e.reason!
+            return e.body!
+        })
 }
 
 export function iconUrl(param: QueryByGoodsRequest): string {
@@ -57,6 +74,11 @@ export function removeGoods(param: RemoveGoodsRequest, userVerify: UserVerifyArg
             },
             data: param
         })
+        .then(e => {
+            if (e.code != 200)
+                return e.reason!
+            return e.body!
+        })
 }
 
 export function completeDeal(){
@@ -65,7 +87,14 @@ export function completeDeal(){
 
 export function queryGoodsInfo(param: QueryGoodsInfoRequest): ResponsePromise<GoodsInfoResponse> {
   return request
-      .get(API.DETAIL, {"goodsIds": param.goodsIds.join(';')})
+      .get(API.DETAIL, {
+        params: {"goodsIds": param.goodsIds.join(';')}
+      })
+      .then(e => {
+          if (e.code != 200)
+              return e.reason!
+          return e.body!
+      })
 
 }
 
@@ -73,6 +102,13 @@ export function queryGoods(param: QueryRequest): ResponsePromise<QueryRequest>{
     param.keywords = param.keywords?.join(';')
     param.tags = param.tags?.join(';')
     return request
-        .get(API.QUERY, param)
+        .get(API.QUERY, {
+            params: param
+        })
+        .then(e => {
+            if (e.code != 200)
+                return e.reason!
+            return e.body!
+        })
 
 }
