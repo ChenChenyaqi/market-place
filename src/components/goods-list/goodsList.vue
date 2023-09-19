@@ -1,22 +1,13 @@
 <template>
-  <div class="flex gap-2">
-    <div class="left flex flex-col gap-2 w-phone-w">
-      <transition-group name="list" tag="div">
+  <div class="gap-2 w-full">
+    <div class="w-full">
+      <transition-group name="list" tag="div" class="w-[90%] mx-[5%]">
         <GoodsCard
-          v-for="{ goodsId, detail } in leftGoodsList"
-          :key="goodItem.goodsId"
+          v-for="{ goodsId, detail } in goodsInfos"
+          :key="goodsId"
           :goods-id="goodsId"
           :goods-detail="detail"
-        />
-      </transition-group>
-    </div>
-    <div class="right flex flex-col gap-2 w-phone-w">
-      <transition-group name="list" tag="div">
-        <GoodsCard
-          v-for="{ goodsId, detail } in rightGoodsList"
-          :key="goodItem.goodsId"
-          :goods-id="goodsId"
-          :goods-detail="detail"
+          class="mt-[10%]"
         />
       </transition-group>
     </div>
@@ -24,36 +15,32 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import {reactive, watch} from 'vue'
 import { GoodsInfo } from '@/components/goods-list/type.ts'
 import { queryGoodsInfo } from '@/api/goods'
 import GoodsCard from '@/components/goods-list/goods-card/goodsCard.vue'
-import { showToast } from '@nutui/nutui'
+import {QueryResponse} from "@/api/goods/response.ts";
 
 const props = defineProps<{
-  goodsIdList: number[]
+  goodsList: QueryResponse
 }>()
 
-const goods = reactive(props.goodsIdList)
-const leftGoodsList = reactive<GoodsInfo[]>([])
-const rightGoodsList = reactive<GoodsInfo[]>([])
+const goods = reactive(props.goodsList)
+const goodsInfos = reactive<GoodsInfo[]>([])
 let renderedSize = 0
 
 watch(goods, async (_, lst) => {
-  const updated: number[] = lst.slice(renderedSize)
-  renderedSize = lst.length
+  const limit = lst.length
   const details = await queryGoodsInfo({
-    goodsIds: updated
+    goodsIds: lst.slice(renderedSize, limit).map(i => i.goodsId)
+  }).then(e=>e, ()=>{
+    lst.length = renderedSize
   })
-
-  if (typeof details == 'string') {
-    showToast.fail('搜索失败'+details)
-  }
-
-  let left: Boolean = false
-  for (let id in updated) {
-    if (!(id in details)) continue
-    ;(left ? leftGoodsList : rightGoodsList).push({
+  for (;renderedSize < limit; renderedSize ++){
+    const id = goods[renderedSize].goodsId
+    if (!(id in details))
+      continue
+    goodsInfos.push({
       goodsId: id,
       detail: details[id]
     })

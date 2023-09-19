@@ -119,10 +119,6 @@ function choose(item) {
 }
 function visitorSignInProc() {
   visitorSignIn(visitorName.value).then((result) => {
-    if (typeof result == 'string') {
-      showToast.fail(result)
-      return
-    }
     saveUser(result)
     showToast.success('欢迎您，' + visitorName.value)
     visitorNameDialog.value = false

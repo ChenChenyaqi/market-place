@@ -1,6 +1,6 @@
 
-import {GoodsInfoResponse, GoodsResponse} from "@/api/goods/response.ts";
-import request from "../axios";
+import {GoodsDetail, GoodsInfoResponse, GoodsResponse, QueryResponse} from "@/api/goods/response.ts";
+import { jsonRequest, rawRequest } from "@/api/axios/index.ts";
 import {UserVerifyArgument} from "@/api/user/request.ts";
 import {
     QueryByGoodsRequest,
@@ -9,7 +9,6 @@ import {
     QueryGoodsInfoRequest,
     QueryRequest
 } from "@/api/goods/request.ts";
-import {ResponsePromise} from "@/api/global/response.ts";
 
 enum API{
     PUBLISH = '/goods/publish',
@@ -19,21 +18,16 @@ enum API{
     QUERY = '/query',
 }
 
-export function publish(param: PublishRequest): ResponsePromise<GoodsResponse>{
-    param.keywords = param.keywords?.join(';')
-    param.tags = param.tags?.join(';')
-    return request
+export function publish(param: PublishRequest): Promise<GoodsResponse>{
+    param.keywords = param.keywords?.join(',')
+    param.tags = param.tags?.join(',')
+    return jsonRequest
         .post(API.PUBLISH, param)
-        .then(e => {
-            if (e.code != 200)
-                return e.reason!
-            return e.body!
-        })
 
 }
 
-export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyArgument): ResponsePromise<Any>{
-    return request
+export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyArgument): Promise<Any>{
+    return jsonRequest
         .put(API.ICON, param, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -42,31 +36,21 @@ export function uploadIcon(param: File, goodsId: number, userVerify: UserVerifyA
                 "X-Goods-Id": goodsId
             }
         })
-        .then(e => {
-            if (e.code != 200)
-                return e.reason!
-            return e.body!
-        })
 }
 
-export function getIcon(param: QueryByGoodsRequest): ResponsePromise<File>{
-    return request
+export function getIcon(param: QueryByGoodsRequest): Promise<File>{
+    return rawRequest
         .get(API.ICON, {
             params: param
-        })
-        .then(e => {
-            if (e.code != 200)
-                return e.reason!
-            return e.body!
         })
 }
 
 export function iconUrl(param: QueryByGoodsRequest): string {
-    return import.meta.env.VITE_APP_BASE_API + "/" + param.goodsId
+    return import.meta.env.VITE_APP_BASE_API + "goodsId=" + param.goodsId
 }
 
-export function removeGoods(param: RemoveGoodsRequest, userVerify: UserVerifyArgument): ResponsePromise<Any>{
-    return request
+export function removeGoods(param: RemoveGoodsRequest, userVerify: UserVerifyArgument): Promise<Any>{
+    return jsonRequest
         .delete(API.REMOVE, {
             headers: {
                 "X-User-Id": userVerify.userId,
@@ -74,41 +58,31 @@ export function removeGoods(param: RemoveGoodsRequest, userVerify: UserVerifyArg
             },
             data: param
         })
-        .then(e => {
-            if (e.code != 200)
-                return e.reason!
-            return e.body!
-        })
 }
 
 export function completeDeal(){
     // todo completeDeal logic
 }
 
-export function queryGoodsInfo(param: QueryGoodsInfoRequest): ResponsePromise<GoodsInfoResponse> {
-  return request
+export function queryGoodsInfo(param: QueryGoodsInfoRequest): Promise<GoodsInfoResponse> {
+  return jsonRequest
       .get(API.DETAIL, {
-        params: {"goodsIds": param.goodsIds.join(';')}
+        params: {"goodsIds": param.goodsIds.join(',')}
       })
-      .then(e => {
-          if (e.code != 200)
-              return e.reason!
-          return e.body!
+      .then((raw: QueryResponse) => {
+          const body: Record<number, GoodsDetail> = {}
+          for (const k in raw)
+              body[parseInt(k)] = raw[k]
+          return body
       })
-
 }
 
-export function queryGoods(param: QueryRequest): ResponsePromise<QueryRequest>{
-    param.keywords = param.keywords?.join(';')
-    param.tags = param.tags?.join(';')
-    return request
+export function queryGoods(param: QueryRequest): Promise<QueryResponse>{
+    param.keywords = param.keywords?.join(',')
+    param.tags = param.tags?.join(',')
+    return jsonRequest
         .get(API.QUERY, {
             params: param
-        })
-        .then(e => {
-            if (e.code != 200)
-                return e.reason!
-            return e.body!
         })
 
 }

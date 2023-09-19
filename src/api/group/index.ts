@@ -1,10 +1,9 @@
 import {MessageQueryArgument} from "request.ts";
 import {QueryByGoodsRequest} from "@/api/goods/request.ts";
-import {GroupResponse} from "response.ts";
-import {request} from "../axios";
+import {GroupResponse} from "./response.ts";
 import {SellerResponse} from "@/api/goods/response.ts";
 import {QueryByGroupRequest} from "@/api/group/request.ts";
-import {ResponsePromise} from "@/api/global/response.ts";
+import {jsonRequest} from "@/api/axios";
 
 enum API{
     GROUP_URL = "/group",
@@ -53,28 +52,18 @@ export class ConnectionBuilder{
     }
 }
 
-export function getGroupId(param: QueryByGoodsRequest): ResponsePromise<GroupResponse> {
-    return request
+export function getGroupId(param: QueryByGoodsRequest): Promise<GroupResponse> {
+    return jsonRequest
         .get(API.GROUP_QUERY, {
             params: param
-        })
-        .then(e => {
-            if (e.code != 200)
-                return e.reason!
-            return e.body!
         })
 
 }
 
-export function getSellerId(param: QueryByGroupRequest): ResponsePromise<SellerResponse> {
-    return request
+export function getSellerId(param: QueryByGroupRequest): Promise<SellerResponse> {
+    return jsonRequest
         .get(API.GROUP_SELLER, {
             params: param
-        })
-        .then(e => {
-            if (e.code != 200)
-                return e.reason!
-            return e.body!
         })
 
 }
