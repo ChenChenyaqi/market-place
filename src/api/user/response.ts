@@ -1,5 +1,5 @@
-import {AutoSignInRequest} from "@/api/user/request.ts";
-import {UserType} from "@/api/global/enum.ts";
+import { AutoSignInRequest } from '@/api/user/request.ts'
+import { UserType } from '@/api/global/enum.ts'
 
 export type SignInResponse = AutoSignInRequest
 
@@ -9,7 +9,7 @@ export type SignInResponse = AutoSignInRequest
  */
 export interface UserInfoResponse {
   name: string
-  type: UserType | "UNKNOWN"
+  type: UserType
 }
 
 /**
