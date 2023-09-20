@@ -1,6 +1,8 @@
 export enum UserType{
-    STUDENT="STUDENT",
-    COMPANY="COMPANY"
+    STUDENT = "STUDENT",
+    COMPANY = "COMPANY",
+    UNKNOWN = "UNKNOWN",
+    VISITOR = "VISITOR"
 }
 
 export enum GoodsType{

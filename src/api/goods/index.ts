@@ -1,21 +1,25 @@
-
-import {GoodsDetail, GoodsInfoResponse, GoodsResponse, QueryResponse} from "@/api/goods/response.ts";
-import { jsonRequest, rawRequest } from "@/api/axios/index.ts";
-import {UserVerifyArgument} from "@/api/user/request.ts";
 import {
-    QueryByGoodsRequest,
-    RemoveGoodsRequest,
-    PublishRequest,
-    QueryGoodsInfoRequest,
-    QueryRequest
-} from "@/api/goods/request.ts";
+  GoodsDetail,
+  GoodsInfoResponse,
+  GoodsResponse,
+  QueryResponse
+} from '@/api/goods/response.ts'
+import { jsonRequest, rawRequest } from '@/api/axios/index.ts'
+import { UserVerifyArgument } from '@/api/user/request.ts'
+import {
+  PublishRequest,
+  QueryByGoodsRequest,
+  QueryGoodsInfoRequest,
+  QueryRequest,
+  RemoveGoodsRequest
+} from '@/api/goods/request.ts'
 
-enum API{
-    PUBLISH = '/goods/publish',
-    ICON = '/goods/icon',
-    REMOVE = '/goods/remove',
-    DETAIL = '/query/info',
-    QUERY = '/query',
+enum API {
+  PUBLISH = '/goods/publish',
+  ICON = '/goods/icon',
+  REMOVE = '/goods/remove',
+  DETAIL = '/query/info',
+  QUERY = '/query'
 }
 
 export function publish(param: PublishRequest): Promise<GoodsResponse>{
@@ -44,6 +48,16 @@ export function getIcon(param: QueryByGoodsRequest): Promise<File>{
             params: param
         })
 }
+
+export function checkIconsExist(param: QueryGoodsInfoRequest): Promise<bigint[]>{
+    return jsonRequest
+        .get(API.ICON, {
+            params: {"goodsIds": param.goodsIds.join(',')}
+        }).then(e => {
+          return e.map(i => parseInt(i))
+      })
+}
+
 
 export function iconUrl(param: QueryByGoodsRequest): string {
     return import.meta.env.VITE_APP_BASE_API + "goodsId=" + param.goodsId

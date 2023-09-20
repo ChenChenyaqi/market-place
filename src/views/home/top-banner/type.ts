@@ -4,4 +4,5 @@ export interface menuItems {
     color: string
     name: string
     subname: string
+    action: string | (() => void)
 }

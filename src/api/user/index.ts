@@ -1,16 +1,17 @@
-
 import {
   AutoSignInRequest,
   QueryByUserRequest,
   SignInRequest,
   SignUpRequest,
   VerifyRequest
-} from "@/api/user/request.ts";
+} from '@/api/user/request.ts'
 
 import {
-  CodeResponse, SignInResponse, UserInfoResponse
-} from "@/api/user/response.ts";
-import { jsonRequest } from "@/api/axios/index.ts";
+  CodeResponse,
+  SignInResponse,
+  UserInfoResponse
+} from '@/api/user/response.ts'
+import { jsonRequest } from '@/api/axios/index.ts'
 
 enum API {
   INFO_URL = '/userinfo',
@@ -43,7 +44,6 @@ export function signIn(param: SignInRequest): Promise<SignInResponse>{
 export function autoSignIn(param: AutoSignInRequest): Promise<CodeResponse>{
   return jsonRequest
       .post(API.AUTO_SIGNIN_URL, param)
-
 }
 
 export function getUserInfo(param: QueryByUserRequest): Promise<UserInfoResponse>{
@@ -56,7 +56,6 @@ export function getUserInfo(param: QueryByUserRequest): Promise<UserInfoResponse
 
 export function visitorSignIn(name: String):
     Promise<SignInResponse>{
-
   return jsonRequest
       .post(API.VISITOR_SIGNIN_URL, {
           name: name

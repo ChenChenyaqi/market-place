@@ -24,8 +24,8 @@
 
 <script setup lang="ts">
 import { GoodsDetail } from '@/api/goods/response.ts'
-import { ref, Ref } from 'vue'
-import { getIcon, iconUrl } from '@/api/goods'
+import { Ref } from 'vue'
+import { iconUrl } from '@/api/goods'
 import { UserType } from '@/api/global/enum.ts'
 
 const props = defineProps<{
@@ -33,12 +33,9 @@ const props = defineProps<{
   goodsId: number
 }>()
 
-const goodsImage = ref(iconUrl({ goodsId: props.goodsId }))
-
-getIcon({ goodsId: props.goodsId }).then(
-  () => {},
-  () => {goodsImage.value = ''}
-)
+const goodsImage = props.goodsDetail.hasIcon
+  ? iconUrl({ goodsId: props.goodsId })
+  : ''
 </script>
 
 <style scoped></style>

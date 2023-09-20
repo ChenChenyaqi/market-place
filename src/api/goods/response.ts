@@ -10,6 +10,7 @@ import {QueryByGoodsRequest} from "@/api/goods/request.ts";
 export interface GoodsDetail {
   name: string
   price: number
+  hasIcon: boolean
   publisherType: UserType
   ioType: IOType
 }

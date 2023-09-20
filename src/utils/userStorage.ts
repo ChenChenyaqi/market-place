@@ -1,21 +1,25 @@
-import {AutoSignInRequest} from "@/api/user/request.ts";
+import { UserType } from '@/api/global/enum.ts'
 
-export function saveUser(info: AutoSignInRequest) {
-  localStorage.setItem('userId', info.userId)
-  localStorage.setItem('code', info.code)
-  localStorage.setItem('last_check', Date.now())
+export interface UserInfo {
+  userId: number
+  name: string
+  type: UserType
+  code: string
 }
 
-export function getUser(): AutoSignInRequest {
-  return {
-    userId: localStorage.getItem('userId') || 0,
-    code: localStorage.getItem('code') || ''
-  }
+export function saveUserInfo(info: UserInfo) {
+  localStorage.setItem('info', JSON.stringify(info))
+  localStorage.setItem('last_check', Date.now())
+
+}
+
+export function getUser(): Info | null {
+  const s = localStorage.getItem('info') || ''
+  return s == '' ? null : JSON.parse(s)
 }
 
 export function resetUser() {
-  localStorage.setItem('userId', 0)
-  localStorage.setItem('code', '')
+  localStorage.setItem('info', '')
   localStorage.setItem('last_check', 0)
 }
 
@@ -23,6 +27,6 @@ export function getLastCheck(): bigint {
   return localStorage.getItem('last_check') || 0
 }
 
-export function updateCode(code: string) {
-  localStorage.setItem('code', code)
+export function updateInfo(info: UserInfo) {
+  localStorage.setItem('info', info)
 }

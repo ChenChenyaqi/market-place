@@ -1,9 +1,9 @@
 import axios from 'axios'
-import {showToast} from "@nutui/nutui";
+import { showToast } from '@nutui/nutui'
 
 export const jsonRequest = axios.create({
   // todo upgrade to https
-  baseURL: "http://" + import.meta.env.VITE_APP_BASE_API,
+  baseURL: 'http://' + import.meta.env.VITE_APP_BASE_API,
   timeout: 5000
 })
 
@@ -25,9 +25,10 @@ jsonRequest.interceptors.response.use(
       return response.data.body
     return Promise.reject(response.data.reason)
   },
-  (error) => {
-      let message
-      const { status } = error.response
+  (error: any) => {
+    let message
+    if ("response" in error) {
+      const {status} = error.response
       switch (status) {
         case 401:
           message = 'TOKEN过期'
@@ -46,8 +47,13 @@ jsonRequest.interceptors.response.use(
           return
       }
       showToast.fail(message)
-      return Promise.reject(message)
     }
+    else{
+      showToast.fail(message ="请检查网络连接或咨询维护人员")
+      console.log(error)
+    }
+    return Promise.reject(message)
+  }
 )
 
 rawRequest.interceptors.response.use(
