@@ -23,6 +23,12 @@
     :allow-submit="(s) => s.toString().length > 2"
     @submit="visitorSignInProc"
   />
+  <me-pane
+    ref="Me"
+    :title="user.name"
+    :user-type="user.type"
+    @sign-out="signOut"
+  />
   <nut-action-sheet
     v-model:visible="showAction"
     :menu-items="choices"
@@ -36,22 +42,25 @@ import GoodsList from '@/components/goods-list/goodsList.vue'
 import { onBeforeMount, reactive, ref } from 'vue'
 import { QueryResponse } from '@/api/goods/response.ts'
 import { queryGoods } from '@/api/goods'
-import useUserStore from '@/store/user'
+import { useUserStore } from '@/store/user'
 import { showToast } from '@nutui/nutui'
 import { menuItems } from '@/views/home/top-banner/type.ts'
 import { UserType } from '@/api/global/enum.ts'
 import SingleInput from '@/components/single-input/singleInput.vue'
 import router from '@/router'
 import { switchType } from '@/views/home/util.ts'
+import { getLastCheck } from '@/utils/userStorage.ts'
+import MePane from '@/views/home/me/mePane.vue'
 
 let currentPage = 0
 
 const user = useUserStore()
 
-const meLink = ref('/sign')
 const hasMore = ref(true)
 const showAction = ref(false)
 const searchValue = ref('')
+
+const Me = ref<MePane>(null)
 const goodsList = ref<GoodsList>(null)
 const visitorInput = ref<SingleInput>(null)
 
@@ -65,7 +74,8 @@ const choices = reactive<menuItems[]>([
 ])
 
 function showMe() {
-  router.push(meLink.value)
+  if (user.code == '') router.push('/sign')
+  else Me.value.show()
 }
 
 function visitorSignInProc() {
@@ -84,7 +94,7 @@ function visitorSignInProc() {
     })
 }
 
-function clickItem(goodsId: bigint): void {
+function clickItem(goodsId: number): void {
   // todo
 }
 
@@ -115,6 +125,12 @@ function showActions() {
   showAction.value = true
 }
 
+function signOut() {
+  console.log('sign out')
+  user.signOut()
+  router.go(0)
+}
+
 onBeforeMount(() => {
   user.autoSignin().then((e) => {
     choices.splice(0, 1)
@@ -136,13 +152,11 @@ onBeforeMount(() => {
       )
       return
     }
-
-    console.log(e)
-    meLink.value = '/me'
-    showToast.success('欢迎回来，' + e.name)
-
-    switchType(e.type, choices)
+    if ((Date.now() - getLastCheck()) / 1000 / 60 > 15)
+      showToast.success('欢迎回来，' + user.name)
+    switchType(user.type, choices)
   })
+
   load()
 })
 </script>

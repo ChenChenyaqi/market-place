@@ -20,9 +20,14 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/sign/index.vue')
   },
   {
-    path: '/me',
-    name: 'me',
-    component: () => import('@/views/me/index.vue')
+    path: '/upgrade',
+    name: 'upgrade',
+    component: () => import('@/views/upgrade/index.vue')
+  },
+  {
+    path: '/verify',
+    name: 'verify',
+    component: () => import('@/views/verify/index.vue')
   },
   {
     path: '/404',

@@ -29,5 +29,7 @@ export function switchType(type: UserType, choices: menuItems[]) {
     case UserType.COMPANY:
       // todo add company option
       break
+    default:
+      throw Error('Unknown user type: ' + JSON.stringify(type))
   }
 }

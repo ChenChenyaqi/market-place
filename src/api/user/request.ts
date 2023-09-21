@@ -36,6 +36,7 @@ export type UserVerifyArgument = AutoSignInRequest
 /**
  * @member username 用户名称，用于格式化问候语
  * @member contact 用户联系方式，用于发送验证码
+ * @member type 联系方式类型
  */
 export interface VerifyRequest {
   username: string,
@@ -54,4 +55,17 @@ export interface  SignUpRequest {
   password: string
   contact: string
   code: string
+}
+
+export interface UpgradeRequest {
+  username: string
+  password: string
+  contact: string
+  type: ContactType
+  code: string
+}
+
+export interface verifyHeader {
+  xUserId: number
+  xUserCode: string
 }

@@ -3,6 +3,8 @@ import {
   QueryByUserRequest,
   SignInRequest,
   SignUpRequest,
+  UpgradeRequest,
+  verifyHeader,
   VerifyRequest
 } from '@/api/user/request.ts'
 
@@ -19,7 +21,8 @@ enum API {
   SIGNUP_RUL = '/signup',
   SIGNIN_URL = '/signin',
   VISITOR_SIGNIN_URL = '/visitor',
-  AUTO_SIGNIN_URL = '/auto-signin'
+  AUTO_SIGNIN_URL = '/auto-signin',
+  VISITOR_UPGRADE_URL = '/visitor/upgrade'
 }
 
 export function sendVerifyCode(param: VerifyRequest): Promise<null>{
@@ -62,3 +65,12 @@ export function visitorSignIn(name: String):
       })
 }
 
+export function visitorUpgrade(param: UpgradeRequest, header: verifyHeader):
+    Promise<CodeResponse>{
+  return jsonRequest.post(API.VISITOR_UPGRADE_URL, param, {
+    headers: {
+      "X-User-Id": header.xUserId,
+      "X-User-Code": header.xUserCode
+    }
+  })
+}

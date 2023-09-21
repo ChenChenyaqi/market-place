@@ -13,8 +13,8 @@ export function saveUserInfo(info: UserInfo) {
 
 }
 
-export function getUser(): Info | null {
-  const s = localStorage.getItem('info') || ''
+export function getUser(): UserInfo | null {
+  const s = localStorage.getItem('info')
   return s == '' ? null : JSON.parse(s)
 }
 

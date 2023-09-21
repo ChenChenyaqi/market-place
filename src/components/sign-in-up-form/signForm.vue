@@ -1,10 +1,14 @@
 <template>
   <nut-cell center>
     <nut-form :model-value="state" ref="form" class="w-full">
-      <nut-form-item prop="signSwitch" :label="signSwitch ? '注册会员' : '会员登录'">
+      <nut-form-item
+        prop="signSwitch"
+        :label="signSwitch ? '注册会员' : '会员登录'"
+      >
         <nut-switch
           v-model="signSwitch"
-          class="ml-[45%] mr-45% w-[10%]"></nut-switch>
+          class="ml-[45%] mr-45% w-[10%]"
+        ></nut-switch>
       </nut-form-item>
       <nut-form-item
         :label="signSwitch ? '用户名' : '身份'"
@@ -61,7 +65,7 @@
         </nut-radio-group>
       </nut-form-item>
       <nut-form-item
-        v-if="signSwitch && (state.type !== '')"
+        v-if="signSwitch && state.type !== ''"
         label="联系方式"
         prop="contact"
         required
@@ -126,9 +130,9 @@ import { reactive, ref } from 'vue'
 import { sendVerifyCode } from '@/api/user'
 import { state } from 'vue-tsc/out/shared'
 import { typeToTemplate } from '@/components/sign-in-up-form/type.ts'
-import useUserStore from '@/store/user'
+import { useUserStore } from '@/store/user'
 import { showToast } from '@nutui/nutui'
-import router from "@/router";
+import router from '@/router'
 
 const user = useUserStore()
 const signSwitch = ref(false)
@@ -182,7 +186,7 @@ function requestVerify() {
       showToast.warn(e.reason)
       return
     }
-    showToast.success("验证码已发送")
+    showToast.success('验证码已发送')
   })
 }
 
